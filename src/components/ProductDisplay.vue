@@ -5,7 +5,13 @@
         <img :src="productData.image" alt="" class="product-preview" />
       </div>
       <div class="product-detail">
-        <h2 class="product-name">
+        <h2
+          class="product-name"
+          :class="{
+            'blue-text': isMensClothing,
+            'purple-text': isWomensClothing,
+          }"
+        >
           {{ productData.title }}
         </h2>
         <div class="category-rating">
@@ -17,10 +23,35 @@
         <div class="description-container">
           <p class="description">{{ productData.description }}</p>
         </div>
-        <p class="price">{{ "$" + productData.price }}</p>
+        <p
+          class="price"
+          :class="{
+            'blue-text': isMensClothing,
+            'purple-text': isWomensClothing,
+          }"
+        >
+          {{ "$" + productData.price }}
+        </p>
         <div class="action-button">
-          <button class="buy-button">Buy Now</button>
-          <button class="next-button">Next Product</button>
+          <button
+            class="buy-button"
+            :class="{
+              'blue-buy-button': isMensClothing,
+              'purple-buy-button': isWomensClothing,
+            }"
+          >
+            Buy Now
+          </button>
+          <button
+            class="next-button"
+            :class="{
+              'blue-next-button': isMensClothing,
+              'purple-next-button': isWomensClothing,
+            }"
+            @click="getNextProduct"
+          >
+            Next Product
+          </button>
         </div>
       </div>
     </div>
@@ -28,12 +59,23 @@
 </template>
 
 <script>
+let currentIndex = 1;
 export default {
   name: "ProductDisplay",
   data() {
     return {
       productData: null,
     };
+  },
+  computed: {
+    isMensClothing() {
+      return this.productData && this.productData.category === "men's clothing";
+    },
+    isWomensClothing() {
+      return (
+        this.productData && this.productData.category === "women's clothing"
+      );
+    },
   },
   mounted() {
     this.fetchProductData();
@@ -42,12 +84,20 @@ export default {
   methods: {
     async fetchProductData() {
       try {
-        const response = await fetch("https://fakestoreapi.com/products/1");
+        const response = await fetch(
+          `https://fakestoreapi.com/products/${currentIndex}`
+        );
         this.productData = await response.json(); // Convert response to JSON
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
       console.log(this.productData);
+    },
+    getNextProduct() {
+      // Increment index for the next product
+      currentIndex = (currentIndex % 20) + 1;
+      // Fetch and display the next product
+      this.fetchProductData();
     },
   },
 };
@@ -113,5 +163,48 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.container .action-button .buy-button {
+  width: 45%;
+  height: 35px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.container .action-button .next-button {
+  background-color: #ffffff;
+  width: 45%;
+  height: 35px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.blue-text {
+  color: #002772;
+}
+
+.purple-text {
+  color: #720060;
+}
+
+.blue-buy-button {
+  color: #ffffff;
+  background-color: #002772;
+}
+
+.purple-buy-button {
+  color: #ffffff;
+  background-color: #720060;
+}
+
+.blue-next-button {
+  color: #002772;
+  border: 3px solid #002772;
+}
+
+.purple-next-button {
+  color: #720060;
+  border: 3px solid #720060;
 }
 </style>
