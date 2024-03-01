@@ -2,10 +2,14 @@
   <!--
         element will only be rendered based on category (v-if="isMensClothing",v-if="isWomensClothing",v-if="!isProductAvailable) when it's true, and it will be hidden when it's false
       -->
-  <div class="container" v-if="!loading">
+
+  <!--Loading...-->
+  <div class="loader-container" v-if="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <div class="container" v-else-if="!loading">
     <!--v-if="productData-->
-    <div class="loading-spinner" v-if="loading"></div>
-    <!--Loading...-->
     <section class="men-section" v-if="isMensClothing">
       <div class="bg-container">
         <img
@@ -164,21 +168,15 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-.container {
-  background-color: #ffffff;
-  color: #1e1e1e;
-  font-family: "Poppins", sans-serif;
+.loader-container {
   width: 100%;
   height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
+  display: grid;
+  align-content: center;
   justify-content: center;
 }
 
-.container .loading-spinner {
+.loading-spinner {
   border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #3498db;
@@ -186,8 +184,6 @@ export default {
   height: 120px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
-  z-index: 1;
-  position: absolute;
 }
 
 /* Safari */
@@ -207,6 +203,20 @@ export default {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.container {
+  background-color: #ffffff;
+  color: #1e1e1e;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .container .bg-container {
@@ -287,13 +297,13 @@ export default {
   align-items: baseline;
   justify-content: space-between;
   margin-bottom: -15px;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .container .product .product-detail .category-rating .category {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
 }
 
 .container .product .product-detail .description-container {
@@ -400,5 +410,41 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-weight: 800;
+}
+
+@media only screen and (max-width: 600px) {
+  .container .bg-container {
+    height: 250px;
+  }
+
+  .container .product {
+    grid-template-columns: none;
+    width: 85%;
+    height: 300px;
+    position: absolute;
+    top: 5px;
+  }
+
+  .container .product .product-picture {
+    width: 100%;
+    height: 100%;
+  }
+
+  .container .product .product-picture .product-preview {
+    width: 250px;
+    height: 300px;
+  }
+
+  .container .product .product-detail .product-name-men,
+  .container .product .product-detail .product-name-women {
+    font-size: 20px;
+    font-weight: 400;
+    height: 50px;
+  }
+
+  .container .product .product-detail .description-container {
+    height: 100px;
+    font-size: 16px;
+  }
 }
 </style>
