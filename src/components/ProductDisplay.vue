@@ -1,97 +1,108 @@
 <template>
   <!--
-        element will only be rendered (v-if="isProductAvailable") when isProductAvailable is true, and it will be hidden when isProductAvailable is false
+        element will only be rendered based on category (v-if="isMensClothing",v-if="isWomensClothing",v-if="!isProductAvailable) when it's true, and it will be hidden when it's false
       -->
-  <div class="container" v-if="productData">
-    <div class="bg-container">
-      <img
-        src="../assets/powder-blue-web-solid-color-background.jpg"
-        alt=""
-        class="bg-img"
-        v-if="isMensClothing"
-      />
-      <img
-        src="../assets/queen-pink-solid-color-background.jpg"
-        alt=""
-        class="bg-img"
-        v-if="isWomensClothing"
-      />
-      <img
-        src="../assets/light-gray-solid-color-background.jpg"
-        alt=""
-        class="bg-img"
-        v-if="!isProductAvailable"
-      />
-    </div>
-    <div class="unavailable-page" v-if="!isProductAvailable">
-      <p class="unavailable-message">This product is unavailable to show</p>
-      <button class="next-button1" @click="getNextProduct">Next Product</button>
-    </div>
-    <div
-      class="product"
-      :class="{
-        'unavailable-page': !isProductAvailable,
-      }"
-      v-if="isProductAvailable"
-    >
-      <div class="product-picture">
-        <img :src="productData.image" alt="" class="product-preview" />
+  <div class="container" v-if="!loading">
+    <!--v-if="productData-->
+    <div class="loading-spinner" v-if="loading"></div>
+    <!--Loading...-->
+    <section class="men-section" v-if="isMensClothing">
+      <div class="bg-container">
+        <img
+          src="../assets/powder-blue-web-solid-color-background.jpg"
+          alt=""
+          class="bg-img"
+        />
       </div>
-      <div class="product-detail">
-        <h2
-          class="product-name"
-          :class="{
-            'blue-text': isMensClothing,
-            'purple-text': isWomensClothing,
-          }"
-        >
-          {{ productData.title }}
-        </h2>
-        <div class="category-rating">
-          <p class="category">
-            {{ productData.category }}
-          </p>
-          <p class="rating">
-            {{ productData.rating.rate + "/" + 5 }}
-          </p>
+      <div class="product">
+        <div class="product-picture">
+          <img :src="productData.image" alt="" class="product-preview" />
         </div>
-        <div class="description-container">
-          <p class="description">
-            {{ productData.description }}
+        <div class="product-detail">
+          <h2 class="product-name-men">
+            {{ productData.title }}
+          </h2>
+          <div class="category-rating">
+            <p class="category">
+              {{ productData.category }}
+            </p>
+            <p class="rating">
+              {{ productData.rating.rate + "/" + 5 }}
+            </p>
+          </div>
+          <div class="description-container">
+            <p class="description">
+              {{ productData.description }}
+            </p>
+          </div>
+          <p class="price-men">
+            {{ "$" + productData.price }}
           </p>
-        </div>
-        <p
-          class="price"
-          :class="{
-            'blue-text': isMensClothing,
-            'purple-text': isWomensClothing,
-          }"
-        >
-          {{ "$" + productData.price }}
-        </p>
-        <div class="action-button">
-          <button
-            class="buy-button"
-            :class="{
-              'blue-buy-button': isMensClothing,
-              'purple-buy-button': isWomensClothing,
-            }"
-          >
-            Buy Now
-          </button>
-          <button
-            class="next-button"
-            :class="{
-              'blue-next-button': isMensClothing,
-              'purple-next-button': isWomensClothing,
-            }"
-            @click="getNextProduct"
-          >
-            Next Product
-          </button>
+          <div class="action-button">
+            <button class="buy-button-men">Buy Now</button>
+            <button class="next-button-men" @click="getNextProduct">
+              Next Product
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+    <section class="women-section" v-if="isWomensClothing">
+      <div class="bg-container">
+        <img
+          src="../assets/queen-pink-solid-color-background.jpg"
+          alt=""
+          class="bg-img"
+        />
+      </div>
+      <div class="product">
+        <div class="product-picture">
+          <img :src="productData.image" alt="" class="product-preview" />
+        </div>
+        <div class="product-detail">
+          <h2 class="product-name-women">
+            {{ productData.title }}
+          </h2>
+          <div class="category-rating">
+            <p class="category">
+              {{ productData.category }}
+            </p>
+            <p class="rating">
+              {{ productData.rating.rate + "/" + 5 }}
+            </p>
+          </div>
+          <div class="description-container">
+            <p class="description">
+              {{ productData.description }}
+            </p>
+          </div>
+          <p class="price-women">
+            {{ "$" + productData.price }}
+          </p>
+          <div class="action-button">
+            <button class="buy-button-women">Buy Now</button>
+            <button class="next-button-women" @click="getNextProduct">
+              Next Product
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="unavailable-section" v-if="!isProductAvailable">
+      <div class="bg-container">
+        <img
+          src="../assets/light-gray-solid-color-background.jpg"
+          alt=""
+          class="bg-img"
+        />
+      </div>
+      <div class="unavailable-page">
+        <p class="unavailable-message">This product is unavailable to show</p>
+        <button class="next-button1" @click="getNextProduct">
+          Next Product
+        </button>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -102,6 +113,7 @@ export default {
   data() {
     return {
       productData: null,
+      loading: false, // Add loading state
     };
   },
   computed: {
@@ -126,14 +138,18 @@ export default {
   methods: {
     async fetchProductData() {
       try {
+        this.loading = true; // Set loading to true before making the API request
+
         const response = await fetch(
           `https://fakestoreapi.com/products/${currentIndex}`
         );
         this.productData = await response.json(); // Convert response to JSON
       } catch (error) {
         console.error("Error fetching product data:", error);
+      } finally {
+        this.loading = false; // Set loading to false after the request is complete
       }
-      console.log(this.productData);
+      //console.log(this.productData);
     },
     getNextProduct() {
       // Increment index for the next product
@@ -162,16 +178,35 @@ export default {
   justify-content: center;
 }
 
-.container .product {
-  background-color: #ffffff;
-  width: 70%;
-  height: 80%;
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding: 10px;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.5);
+.container .loading-spinner {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
   z-index: 1;
+  position: absolute;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .container .bg-container {
@@ -187,38 +222,32 @@ export default {
   height: 100%;
 }
 
-.container .unavailable-page {
+.container .product {
   background-color: #ffffff;
   width: 70%;
   height: 80%;
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   padding: 10px;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.5);
-  background-image: url(../assets/../assets/sad-512-mod-s.png);
-  background-size: cover;
-  background-position: center;
   z-index: 1;
 }
 
-.container .unavailable-page .next-button1 {
+.container .men-section,
+.container .women-section,
+.container .unavailable-section {
   background-color: #ffffff;
-  border: 3px solid #1e1e1e;
-  color: #3f3f3f;
-  width: 50%;
-  height: 35px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.container .unavailable-page .unavailable-message {
   color: #1e1e1e;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .container .product .product-picture {
@@ -243,8 +272,14 @@ export default {
   padding: 5px;
 }
 
-.container .product .product-detail .product-name {
+.container .product .product-detail .product-name-men {
   height: 100px;
+  color: #002772;
+}
+
+.container .product .product-detail .product-name-women {
+  height: 100px;
+  color: #720060;
 }
 
 .container .product .product-detail .category-rating {
@@ -274,9 +309,16 @@ export default {
   font-weight: 400;
 }
 
-.container .product .product-detail .price {
+.container .product .product-detail .price-men {
   margin: 8px 0;
   font-weight: 800;
+  color: #002772;
+}
+
+.container .product .product-detail .price-women {
+  margin: 8px 0;
+  font-weight: 800;
+  color: #720060;
 }
 
 .container .action-button {
@@ -285,48 +327,78 @@ export default {
   justify-content: space-between;
 }
 
-.container .action-button .buy-button {
+.container .action-button .buy-button-men {
   width: 45%;
   height: 35px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: 800;
+  color: #ffffff;
+  background-color: #002772;
+}
+.container .action-button .buy-button-women {
+  width: 45%;
+  height: 35px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 800;
+  color: #ffffff;
+  background-color: #720060;
 }
 
-.container .action-button .next-button {
+.container .action-button .next-button-men {
   background-color: #ffffff;
   width: 45%;
   height: 35px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: 800;
-}
-
-.blue-text {
-  color: #002772;
-}
-
-.purple-text {
-  color: #720060;
-}
-
-.blue-buy-button {
-  color: #ffffff;
-  background-color: #002772;
-}
-
-.purple-buy-button {
-  color: #ffffff;
-  background-color: #720060;
-}
-
-.blue-next-button {
   color: #002772;
   border: 3px solid #002772;
 }
 
-.purple-next-button {
+.container .action-button .next-button-women {
+  background-color: #ffffff;
+  width: 45%;
+  height: 35px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 800;
   color: #720060;
   border: 3px solid #720060;
+}
+
+.container .unavailable-section .unavailable-page {
+  background-color: #ffffff;
+  width: 70%;
+  height: 80%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  padding: 10px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.5);
+  background-image: url(../assets/../assets/sad-512-mod-s.png);
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.container .unavailable-page .unavailable-message {
+  color: #1e1e1e;
+}
+
+.container .unavailable-page .next-button1 {
+  background-color: #ffffff;
+  border: 3px solid #1e1e1e;
+  color: #3f3f3f;
+  width: 50%;
+  height: 35px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 800;
 }
 </style>
