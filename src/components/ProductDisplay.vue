@@ -168,6 +168,19 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
+
+ :root{
+--white: #FFFFFF;
+--MidnightBlue: #002772;
+--WhitePointer: #FDE2FF;
+--CodGray: #1E1E1E;
+--Pompadour: #720060;
+--PattensBlue: #D6E6FF;
+--MineShaft: #3F3F3F;
+--Alto: #DCDCDC;
+ }
+
+
 .loader-container {
   width: 100%;
   height: 100vh;
@@ -207,7 +220,7 @@ export default {
 
 .container {
   background-color: #ffffff;
-  color: #1e1e1e;
+  color: var(--CodGray);
   font-family: "Poppins", sans-serif;
   width: 100%;
   height: 100vh;
@@ -233,7 +246,7 @@ export default {
 }
 
 .container .product {
-  background-color: #ffffff;
+  background-color: var(--white);
   width: 70%;
   height: 80%;
   border-radius: 10px;
@@ -247,8 +260,8 @@ export default {
 .container .men-section,
 .container .women-section,
 .container .unavailable-section {
-  background-color: #ffffff;
-  color: #1e1e1e;
+  background-color: var(--white);
+  color: var(--CodGray);
   font-family: "Poppins", sans-serif;
   width: 100%;
   height: 100vh;
@@ -284,12 +297,12 @@ export default {
 
 .container .product .product-detail .product-name-men {
   height: 100px;
-  color: #002772;
+  color: var(--MidnightBlue);
 }
 
 .container .product .product-detail .product-name-women {
   height: 100px;
-  color: #720060;
+  color: var(--Pompadour);
 }
 
 .container .product .product-detail .category-rating {
@@ -322,13 +335,13 @@ export default {
 .container .product .product-detail .price-men {
   margin: 8px 0;
   font-weight: 800;
-  color: #002772;
+  color: var(--MidnightBlue);
 }
 
 .container .product .product-detail .price-women {
   margin: 8px 0;
   font-weight: 800;
-  color: #720060;
+  color: var(--Pompadour);
 }
 
 .container .action-button {
@@ -343,8 +356,8 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-weight: 800;
-  color: #ffffff;
-  background-color: #002772;
+  color: var(--white);
+  background-color: var(--MidnightBlue);
 }
 .container .action-button .buy-button-women {
   width: 45%;
@@ -352,34 +365,34 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-weight: 800;
-  color: #ffffff;
-  background-color: #720060;
+  color: var(--white);
+  background-color: var(--Pompadour);
 }
 
 .container .action-button .next-button-men {
-  background-color: #ffffff;
+  background-color: var(--white);
   width: 45%;
   height: 35px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: 800;
-  color: #002772;
-  border: 3px solid #002772;
+  color: var(--MidnightBlue);
+  border: 3px solid var(--MidnightBlue);
 }
 
 .container .action-button .next-button-women {
-  background-color: #ffffff;
+  background-color: var(--white);
   width: 45%;
   height: 35px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: 800;
-  color: #720060;
-  border: 3px solid #720060;
+  color: var(--Pompadour);
+  border: 3px solid var(--Pompadour);
 }
 
 .container .unavailable-section .unavailable-page {
-  background-color: #ffffff;
+  background-color: var(--white);
   width: 70%;
   height: 80%;
   border-radius: 10px;
@@ -398,13 +411,13 @@ export default {
 }
 
 .container .unavailable-page .unavailable-message {
-  color: #1e1e1e;
+  color: var(--CodGray);
 }
 
 .container .unavailable-page .next-button1 {
-  background-color: #ffffff;
-  border: 3px solid #1e1e1e;
-  color: #3f3f3f;
+  background-color: var(--white);
+  border: 3px solid var(--CodGray);
+  color: var(--MineShaft);
   width: 50%;
   height: 35px;
   border-radius: 5px;
