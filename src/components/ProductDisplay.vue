@@ -30,9 +30,15 @@
             <p class="category">
               {{ productData.category }}
             </p>
-            <p class="rating">
-              {{ productData.rating.rate + "/" + 5 }}
-            </p>
+            <div class="rating">
+              <p class="rating-number">
+                {{ productData.rating.rate + "/" + 5 }}
+              </p>
+              <div
+                class="circles-men"
+                :style="{ '--rating': productData.rating.rate }"
+              ></div>
+            </div>
           </div>
           <div class="description-container">
             <p class="description">
@@ -71,9 +77,15 @@
             <p class="category">
               {{ productData.category }}
             </p>
-            <p class="rating">
-              {{ productData.rating.rate + "/" + 5 }}
-            </p>
+            <div class="rating">
+              <p class="rating-number">
+                {{ productData.rating.rate + "/" + 5 }}
+              </p>
+              <div
+                class="circles-women"
+                :style="{ '--rating': productData.rating.rate }"
+              ></div>
+            </div>
           </div>
           <div class="description-container">
             <p class="description">
@@ -168,18 +180,19 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-
- :root{
---white: #FFFFFF;
---MidnightBlue: #002772;
---WhitePointer: #FDE2FF;
---CodGray: #1E1E1E;
---Pompadour: #720060;
---PattensBlue: #D6E6FF;
---MineShaft: #3F3F3F;
---Alto: #DCDCDC;
- }
-
+:root {
+  --white: #ffffff;
+  --MidnightBlue: #002772;
+  --WhitePointer: #fde2ff;
+  --CodGray: #1e1e1e;
+  --Pompadour: #720060;
+  --PattensBlue: #d6e6ff;
+  --MineShaft: #3f3f3f;
+  --Alto: #dcdcdc;
+  --circle-size: 55px;
+  --circle-color: #fff;
+  --circle-background: #fc0;
+}
 
 .loader-container {
   width: 100%;
@@ -309,14 +322,60 @@ export default {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: -15px;
+  margin-bottom: -10px;
   font-size: 14px;
   font-weight: 400;
+  width: 102%;
 }
 
 .container .product .product-detail .category-rating .category {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.container .product .product-detail .category-rating .rating {
+  width: 130px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: space-around;
+}
+
+.circles-men {
+  --percent: calc(var(--rating) / 5 * 100%);
+
+  font-size: var(--circle-size);
+
+  &::before {
+    content: "\2022\2022\2022\2022\2022"; /* Five circles */
+    letter-spacing: -5px;
+    background: linear-gradient(
+      90deg,
+      var(--MidnightBlue) var(--percent),
+      var(--Alto) var(--percent)
+    );
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.circles-women {
+  --percent: calc(var(--rating) / 5 * 100%);
+
+  font-size: var(--circle-size);
+
+  &::before {
+    content: "\2022\2022\2022\2022\2022"; /* Five circles */
+    letter-spacing: -5px;
+    background: linear-gradient(
+      90deg,
+      var(--Pompadour) var(--percent),
+      var(--Alto) var(--percent)
+    );
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 .container .product .product-detail .description-container {
@@ -345,6 +404,7 @@ export default {
 }
 
 .container .action-button {
+  width: 102%;
   display: flex;
   align-items: center;
   justify-content: space-between;
